@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>Docker 安装mysql</title>
+      <link href="/2024/11/08/blog4/"/>
+      <url>/2024/11/08/blog4/</url>
+      
+        <content type="html"><![CDATA[<p><strong>1.查看可用版本</strong></p><p>docker search mysql</p><p><strong>2.拉取Mysql镜像</strong></p><p>拉取官方的最新版本的镜像：</p><p>$ docker pull mysql:latest</p><p><strong>3.使用以下命令来查看是否已安装了 mysql：</strong></p><p>$ docker images</p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080021715.png" alt="image-20241108002155678"></p><p><strong>4.运行容器</strong><br>docker run –name aobim-mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;7474 -d mysql</p><p>–name aobim-mysql ：容器名字（例如：aobim-mysql）</p><p> -p 3307:3306 ：映射容器服务的 3307 端口到宿主机的 3306 端口，外部主机可以直接通过ip+3307 访问到 MySQL 的服务。</p><p> MYSQL_ROOT_PASSWORD&#x3D;7474：设置 MySQL 服务 root 用户的密码。</p><p> -d mysql： 设置容器在在后台一直运行。</p><p><strong>5.docker ps 查看容器id</strong></p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080023781.png" alt="image-20241108002317728"></p><p><strong>6.进入容器内操作</strong></p><p>docker exec -it “tag name” bash （tag name就是mysql的容器id）</p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080023272.png" alt="image-20241108002353228"></p><p><strong>6.进入mysql</strong></p><p> mysql -u root -p</p><p><strong>7.输入刚刚设置的密码，进入mysql</strong></p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080024609.png" alt="image-20241108002429528"></p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080024112.png" alt="image-20241108002445076"></p><p>quit退出mysql</p><p>exit退出容器</p><p><strong>8.新建docker-compose.yml</strong></p><p>cd ..</p><p>mkdir mysql</p><p>cd mysql&#x2F;</p><p>vim docker-compose.yml</p><p>version: ‘3.1’</p><p> services:</p><p>  db:</p><p>   image: mysql</p><p>   command: –default-authentication-plugin&#x3D;mysql_native_password</p><p>   restart: always</p><p>   ports:</p><p>​    - 3308:3306</p><p>   environment:</p><p>​    MYSQL_ROOT_PASSWORD: 7474</p><p>  adminer:</p><p>   image: adminer</p><p>   restart: always</p><p>   ports:</p><p>​    - 8081:8080</p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080026151.png" alt="image-20241108002604101"></p><p><strong>9.docker-compose up -d</strong></p><p><img src="C:\Users\57593\AppData\Roaming\Typora\typora-user-images\image-20241108002623894.png" alt="image-20241108002623894"></p><p><strong>10.cd ..</strong></p><p>docker ps</p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080026420.png" alt="image-20241108002657367"></p><p><strong>11.然后可以通过ip+8081来访问mysql</strong></p><p>用户名为root,密码为你在docker-compose.yml里设置的密码。</p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080027011.png" alt="image-20241108002731954"></p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080027757.png" alt="image-20241108002759679"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Docker 安装Nginx</title>
+      <link href="/2024/11/08/blog3/"/>
+      <url>/2024/11/08/blog3/</url>
+      
+        <content type="html"><![CDATA[<p><strong>1.拉取最新的Nginx镜像</strong></p><p>docker pull nginx:latest</p><p><strong>2.使用以下命令来查看是否已安装了 nginx：</strong></p><p>$ docker images</p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080018653.png" alt="image-20241108001843616"></p><p><strong>3.安装完成后，我们可以使用以下命令来运行 nginx 容器：</strong></p><p>$ docker run –name nginx-test -p 8080:80 -d nginx</p><p> –name nginx-test：容器名称。</p><p> -p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。</p><p> -d nginx： 设置容器在在后台一直运行。</p><p><strong>4.ip+8080（刚刚设置的端口）即可出现nginx的欢迎界面，代表安装成功</strong></p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080020030.png" alt="image-20241108002013972"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Ubuntu安装Docker</title>
       <link href="/2024/11/07/blog2/"/>
       <url>/2024/11/07/blog2/</url>
