@@ -4,13 +4,25 @@
   
     
     <entry>
-      <title></title>
+      <title>Ubuntu安装Docker</title>
       <link href="/2024/11/07/blog2/"/>
       <url>/2024/11/07/blog2/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<ol><li><strong>下载 docker</strong></li></ol><p>$ curl -fsSL <a href="https://download.docker.com/linux/ubuntu/gpg">https://download.docker.com/linux/ubuntu/gpg</a> | sudo apt-key add -</p><p>$ sudo apt install software-properties-common</p><p>$ sudo add-apt-repository “deb [arch&#x3D;amd64] <a href="https://download.docker.com/linux/ubuntu">https://download.docker.com/linux/ubuntu</a> $(lsb_release -cs) stable”</p><p>$ sudo apt-get update</p><p>$ apt-cache policy docker-ce</p><p>$ sudo apt-get install -y docker-ce</p><p>$ sudo systemctl status docker（检查docker状态）</p><p><img src="https://cdn.jsdelivr.net/gh/aobiym/PhotoHouse/Hexo/MyBlog/202411080009813.png" alt="image-20241108000935740"></p><p><strong>2.add docker access right…</strong></p><p> $ sudo usermod -aG docker $(whoami) </p><p>&gt;&gt; verify, 要登出再登入，才会有权限</p><p>  $ docker ps  </p><p>&gt; check group belongs to</p><p>$  id -nG</p><p><strong>3.change python version :</strong></p><p>3.1 install new python version</p><p># sudo apt update </p><p># sudo apt install software-properties-common </p><p># sudo add-apt-repository ppa:deadsnakes&#x2F;ppa</p><p># sudo apt update</p><p># sudo apt install python3.9 </p><p><strong>4.Installing Docker Compose</strong></p><p>$ sudo apt-get install python3-pip</p><p>$ sudo pip3 install docker-compose</p><p>** 如果安装过程有错，必须升级 pip3 ，就用以下的命令</p><p>error : No module named ‘setuptools_rust’</p><p>Upgrade to the latest pip and try again. This will fix errors for most</p>]]></content>
       
       
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+        </tags>
       
     </entry>
     
