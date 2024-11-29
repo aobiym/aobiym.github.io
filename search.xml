@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Docker安装Ubuntu</title>
+      <link href="/2024/11/29/blog5/"/>
+      <url>/2024/11/29/blog5/</url>
+      
+        <content type="html"><![CDATA[<p><strong>1.拉取最新ubuntu镜像</strong>    </p><p>$ docker pull ubuntu:latest    </p><p><strong>2.查看ubuntu安装是否成功</strong>   </p><p>$ docker images   </p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292011905.png" alt="image-20241129201129297">    </p><p><strong>3.运行ubuntu</strong>    </p><p>docker run -it –entrypoint “bin&#x2F;bash” ubuntu   </p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292013273.png" alt="image-20241129201332209"></p><p><strong>4.运行</strong>   </p><p># docker-compose up</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Docker安装mysql</title>
       <link href="/2024/11/08/blog4/"/>
       <url>/2024/11/08/blog4/</url>
