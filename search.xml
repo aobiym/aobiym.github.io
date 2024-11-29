@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Hadoopbase</title>
+      <link href="/2024/11/29/blog6/"/>
+      <url>/2024/11/29/blog6/</url>
+      
+        <content type="html"><![CDATA[<p>1.# mkdir ubuntu</p><p># cd ubuntu</p><p>#vim Dockerfile</p><p>&#x2F;&#x2F; docker file for openssh-server</p><p>--</p><p>FROM ubuntu:latest</p><p>RUN apt update &amp;&amp; apt install openssh-server sudo -y</p><p>RUN apt-get install vim -y</p><p>RUN apt-get install iproute2 -y</p><p>RUN apt-get install openjdk-8-jdk -y</p><p>RUN groupadd hadoop</p><p>RUN useradd -rm -d &#x2F;home&#x2F;ubuntu -s &#x2F;bin&#x2F;bash -g root -G sudo -g hadoop -u 1000 hduser </p><p>RUN echo ‘hduser:1234’ | chpasswd</p><p>RUN service ssh start</p><p>EXPOSE 22</p><p>CMD [“&#x2F;usr&#x2F;sbin&#x2F;sshd”,”-D”]</p><p>--</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292020271.png" alt="image-20241129202056204"></p><p><strong>2.Dockerfile 文件的存放目录下（cd ubuntu，执行构建动作</strong>    </p><p>docker build -t hadoopbase .（等个几分钟，不要忘记最后这个点！！！）</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292023440.png" alt="image-20241129202325405"></p><p>可以用docker images查看hadoopbase     </p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292023275.png" alt="image-20241129202349223"></p><p><strong>3.vi docker-compose.yml</strong>    </p><p>&#x2F;&#x2F; docker-compose.yml</p><p>-–</p><p>version: “3”</p><p>services:</p><p> hadoop_master:</p><p>  container_name: hmaster</p><p>  image: hadoopbase</p><p>  restart: on-failure</p><p>  privileged: true</p><p>  command: [“sleep”,”infinity”]</p><p> hadoop_slave1:</p><p>  container_name: hslave1</p><p>  image: hadoopbase</p><p>  restart: on-failure</p><p>  privileged: true</p><p>  command: [“sleep”,”infinity”]</p><p> hadoop_slave2:</p><p>  container_name: hslave2</p><p>  image: hadoopbase</p><p>  restart: on-failure</p><p>  privileged: true</p><p>  command: [“sleep”,”infinity”]</p><p>-–</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292024390.png" alt="image-20241129202432337"></p><p><strong>4.docker-compose up -d</strong>   </p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292025280.png" alt="image-20241129202501243"></p><p>用docker ps命令查看刚刚创建的3个容器    </p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411292025151.png" alt="image-20241129202526106"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Docker安装Ubuntu</title>
       <link href="/2024/11/29/blog5/"/>
       <url>/2024/11/29/blog5/</url>
