@@ -4,6 +4,82 @@
   
     
     <entry>
+      <title></title>
+      <link href="/2024/11/30/blog11/"/>
+      <url>/2024/11/30/blog11/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2024/11/30/blog10/"/>
+      <url>/2024/11/30/blog10/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Zookeeper的安装</title>
+      <link href="/2024/11/30/blog9/"/>
+      <url>/2024/11/30/blog9/</url>
+      
+        <content type="html"><![CDATA[<p><strong>安装 Java JDK</strong>    </p><p>&gt; 己经安装好了，只要找到目录在及修改档案，三台都要改！</p><p># which java</p><p>&gt;&gt;&#x2F;usr&#x2F;bin&#x2F;java</p><p># cd &#x2F;usr&#x2F;bin</p><p># ls -la java*</p><p>&gt;&gt; java -&gt; &#x2F;etc&#x2F;alternatives&#x2F;java</p><p># cd &#x2F;etc&#x2F;alternatives&#x2F;</p><p># ls -la java*</p><p>&gt;&gt; java -&gt; &#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-8-openjdk-amd64&#x2F;jre&#x2F;bin&#x2F;java</p><p># cd &#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-8-openjdk-amd64&#x2F;jre</p><p>以上才是真正的 java home 所在！</p><p>&gt; edit env. path</p><p># vi &#x2F;etc&#x2F;profile</p><p>-—</p><p>export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-8-openjdk-amd64&#x2F;jre</p><p>export CLASSPATH&#x3D;$JAVA_HOME&#x2F;lib&#x2F;</p><p>export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</p><p>-—                </p><p>&gt;&gt; confirm</p><p># source &#x2F;etc&#x2F;profile</p><p># java -version</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302143704.png" alt="image-20241130214324634"></p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302143776.png" alt="image-20241130214342701"></p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302143464.png" alt="image-20241130214356429"></p><p><strong>安装 zookeeper</strong></p><p>&gt;&gt; 复制档案</p><p>$ docker cp apache-zookeeper-3.8.0-bin.tar.gz hmaster:&#x2F;home&#x2F;ubuntu</p><p>&gt; into docker container</p><p>$ docker exec -it hmaster bash</p><p># cd &#x2F;home&#x2F;ubuntu&#x2F;</p><p># mkdir -p &#x2F;usr&#x2F;zookeeper</p><p># tar -zxvf apache-zookeeper-3.8.0-bin.tar.gz -C &#x2F;usr&#x2F;zookeeper&#x2F;  –strip-components 1</p><p><strong>&gt;&gt; 配置文件 conf&#x2F;zoo.cfg</strong></p><p>  # cd &#x2F;usr&#x2F;zookeeper&#x2F;conf</p><p>  # cp zoo_sample.cfg zoo.cfg</p><p>  # vi zoo.cfg</p><p>  -—</p><p>  dataDir&#x3D;&#x2F;usr&#x2F;zookeeper&#x2F;zkdata</p><p>  dataLogDir&#x3D;&#x2F;usr&#x2F;zookeeper&#x2F;zkdatalog </p><p>  server.1&#x3D;hmaster:2888:3888</p><p>server.2&#x3D;hslave1:2888:3888</p><p>server.3&#x3D;hslave2:2888:3888</p><p>-—</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302144193.png" alt="image-20241130214449155"></p><p><strong>&gt;&gt; 在 zookeeper 的目录中，创建 zkdata 和 zkdatalog 两个文件夹</strong></p><p># cd usr&#x2F;zookeeper&#x2F;</p><p># mkdir zkdata</p><p> # mkdir zkdatalog   </p><p> <strong>&gt;&gt; 进入 zkdata 文件夹，创建文件 myid</strong></p><p>  # cd zkdata</p><p>  # vi myid</p><p>  -—</p><p>  1</p><p>  -—  </p><p><strong>&gt;&gt; 远程复制分发安装文件, 改 hslavex1 and hslavex2 为自己的 hslavexx</strong></p><p>  # scp -r &#x2F;usr&#x2F;zookeeper root@hslave1:&#x2F;usr&#x2F;</p><p>  # scp -r &#x2F;usr&#x2F;zookeeper root@hslave2:&#x2F;usr&#x2F;</p><p><strong>&gt; 设置 myid。</strong></p><p>在我们配置的 dataDir 指定的目录下面，创建一个 myid 文件，里面内容为一个数字，用来标识当前主机，conf&#x2F;zoo.cfg 文件中配置的 server.X 中 X 为什么数字，则 myid 文件中就</p><p>myid 文件中就输入这个数字。slavex1 中为 2;slavex2 中为 3。</p><p>#docker exec -it hslave1 bash</p><p># cd usr&#x2F;zookeeper&#x2F;</p><p># cd zkdata</p><p># vi myid</p><p>（将里面的数字改为2）</p><p>然后进入hslave2进行修改</p><p>配置环境变量并启动 ZooKeeper（三台都要）</p><p># vi &#x2F;etc&#x2F;profile</p><p>-—</p><p>#set zookeeper environment</p><p>export ZOOKEEPER_HOME&#x3D;&#x2F;usr&#x2F;zookeeper</p><p>export PATH&#x3D;$PATH:$ZOOKEEPER_HOME&#x2F;bin</p><p># source &#x2F;etc&#x2F;profile</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302147818.png" alt="image-20241130214705768"></p><p><strong>&gt; 启动 ZooKeeper 集群 (三台都要 run! )</strong> </p><p># cd &#x2F;usr&#x2F;zookeeper（要在usr&#x2F;zookeeper&#x2F;下，即zookeeper安装目录下才能启动</p><p># bin&#x2F;zkServer.sh start</p><p># bin&#x2F;zkServer.sh status（三台都启动完才能查看）</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302147541.png" alt="image-20241130214735480"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SSH免密登录</title>
+      <link href="/2024/11/30/blog8/"/>
+      <url>/2024/11/30/blog8/</url>
+      
+        <content type="html"><![CDATA[<p><strong>1.进入hmaster</strong>   </p><p>docker exec -it hmaster bash</p><p>&gt;&gt; 设置 root 密码，要复制档案时会用到, 一样是1234</p><p># passwd </p><p>&gt;&gt;解决 ssh 身份认认证</p><p># cd ~</p><p># su hduser（建立hduser</p><p>$ cd ~</p><p>$ ssh-keygen -t rsa  # 不要设定 phrase</p><p># ssh-copy-id localhost</p><p>然后进入hslave1和hslave2，进行一样的设置</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302139300.png" alt="image-20241130213928239"></p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302139683.png" alt="image-20241130213944608"></p><p><strong>2.hslave1设置完后（此时用hduser身份，hslave2同理</strong>   </p><p>ssh-copy-id -i &#x2F;home&#x2F;ubuntu&#x2F;.ssh&#x2F;id_rsa.pub hduser@hmaster</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302140485.png" alt="image-20241130214018430"></p><p><strong>3.进入hmaster</strong>   </p><p>docker exec -it hmaster bash</p><p>su hduser</p><p>ssh-copy-id -i &#x2F;home&#x2F;ubuntu&#x2F;.ssh&#x2F;id_rsa.pub hduser@hslave1</p><p>出现报错，可能是hslave1 ssh没开    </p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302140197.png" alt="image-20241130214057152"></p><p>进入hslave1（这时候使用root身份）</p><p> ps -e |grep ssh（无结果，代表ssh没开）<br> sudo &#x2F;etc&#x2F;init.d&#x2F;ssh start（开启ssh）</p><p> ps -e |grep ssh（出现sshd，ssh成功开启</p><p>hslave2同理</p><p>最好设置开机自动启动ssh</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302141232.png" alt="image-20241130214119183"></p><p>开启hslave1和hslave2的ssh后，重新进入hmatse</p><p>docker exec -it hmaster bash</p><p>su hduser</p><p>ssh-copy-id -i &#x2F;home&#x2F;ubuntu&#x2F;.ssh&#x2F;id_rsa.pub hduser@hslave1</p><p>ssh-copy-id -i &#x2F;home&#x2F;ubuntu&#x2F;.ssh&#x2F;id_rsa.pub hduser@hslave2</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302141604.png" alt="image-20241130214142545"></p><p>还要在hslave1中添加</p><p>ssh-copy-id -i &#x2F;home&#x2F;ubuntu&#x2F;.ssh&#x2F;id_rsa.pub hduser@hslave2</p><p>在hslave2中添加</p><p>ssh-copy-id -i &#x2F;home&#x2F;ubuntu&#x2F;.ssh&#x2F;id_rsa.pub hduser@hslave1</p><p>这样，三个之间就能都免密登录</p><p>注意，要用hduser才能进行免密登录，root的话还需输入密码</p><p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302142768.png" alt="image-20241130214202707"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hadoop </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>时间同步</title>
       <link href="/2024/11/30/blog7/"/>
       <url>/2024/11/30/blog7/</url>
