@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>时间同步 | AOBIYM'S BLOG</title><meta name="author" content="aobiym"><meta name="copyright" content="aobiym"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="**1.下载zookeeper **    wget https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;apache&#x2F;zookeeper&#x2F;zookeeper-3.8.0&#x2F;apache-zookeeper-3.8.0-bin.tar.gz     **2.进入hmaster    ** docker exec -it hmaster bash      3.ssh 连线的设定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="时间同步">
+<meta property="og:url" content="https://aobiym.github.io/2024/11/30/blog7/index.html">
+<meta property="og:site_name" content="AOBIYM&#39;S BLOG">
+<meta property="og:description" content="**1.下载zookeeper **    wget https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;apache&#x2F;zookeeper&#x2F;zookeeper-3.8.0&#x2F;apache-zookeeper-3.8.0-bin.tar.gz     **2.进入hmaster    ** docker exec -it hmaster bash      3.ssh 连线的设定">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://aobiym.github.io/img/avatar.png">
+<meta property="article:published_time" content="2024-11-30T13:16:47.264Z">
+<meta property="article:modified_time" content="2024-11-30T13:23:11.788Z">
+<meta property="article:author" content="aobiym">
+<meta property="article:tag" content="hadoop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://aobiym.github.io/img/avatar.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://aobiym.github.io/2024/11/30/blog7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '时间同步',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-11-30 21:23:11',
+  isShuoshuo: false
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">AOBIYM'S BLOG</span></a><a class="nav-page-title" href="/"><span class="site-name">时间同步</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">时间同步</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-30T13:16:47.264Z" title="Created 2024-11-30 21:16:47">2024-11-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-30T13:23:11.788Z" title="Updated 2024-11-30 21:23:11">2024-11-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>**1.下载zookeeper **   </p>
+<p>wget <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.8.0/apache-zookeeper-3.8.0-bin.tar.gz">https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.8.0/apache-zookeeper-3.8.0-bin.tar.gz</a>    </p>
+<p>**2.进入hmaster    **</p>
+<p>docker exec -it hmaster bash     </p>
+<p><strong>3.ssh 连线的设定(三台都要！）</strong>   </p>
+<p>#</p>
+<p>#Port 22</p>
+<p>#AddressFamily any</p>
+<p>#ListenAddress 0.0.0.0</p>
+<p>#ListenAddress ::</p>
+<p>将Port和两个ListenAddress前#去除</p>
+<p>#LoginGraceTime 2m</p>
+<p>#PermitRootLogin prohibit-password</p>
+<p>#StrictModels yes</p>
+<p>#MaxAuthTries 6</p>
+<p>#MaxSessions 10</p>
+<p>将PermitRootLogin前#去除，并改为PermitRootLogin yes</p>
+<p>#PasswordAuthentication yes</p>
+<p>#PermitEmptyPasswords no</p>
+<p>#PasswordAuthentication yes</p>
+<p>将上面第三行PasswordAuthentication前的#去除</p>
+<p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302119263.png" alt="image-20241130211921113"></p>
+<p><img src="C:\Users\57593\AppData\Roaming\Typora\typora-user-images\image-20241130211946261.png"></p>
+<p><strong>4.开启ssh，三台都要</strong>    </p>
+<p>&gt;&gt;开启</p>
+<p># service ssh start</p>
+<p>&gt;&gt;检查是否成功开启</p>
+<p># ps -e | grep sshd</p>
+<p>&gt;&gt;每次开机自动开启sshd服务</p>
+<p># systemctl enable ssh.service</p>
+<p>&gt;&gt;如果没有安装，就要自行安装</p>
+<p>#apt-get install openssh-server</p>
+<p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302120143.png" alt="image-20241130212050096"></p>
+<p><strong>5.进入hslave1，hslave2</strong>   </p>
+<p>  docker exec -it hslave1 bash</p>
+<p>  ip addr（查找ip地址</p>
+<p>  更改 hslave1, hslave2 的设定</p>
+<p># vi &#x2F;etc&#x2F;hosts   </p>
+<p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302121814.png" alt="image-20241130212122770"></p>
+<p><strong>6.时间同步 in master</strong>   </p>
+<p># apt-get install -y net-tools</p>
+<p># apt-get install ntp -y</p>
+<p># vi &#x2F;etc&#x2F;ntp.conf</p>
+<p>在末尾加入</p>
+<p>server 127.127.1.0 # local clock</p>
+<p>fudge 127.127.1.0 stratum 10    </p>
+<p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302121196.png" alt="image-20241130212154147"></p>
+<p><strong>7.in master</strong></p>
+<p>  # systemctl enable ntp.service</p>
+<p> # service ntp start</p>
+<p> # systemctl enable ntp  </p>
+<p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302122618.png" alt="image-20241130212238565"></p>
+<p><strong>8.&gt;&gt; in slave1 and slave2</strong>    </p>
+<p> docker exec -it hslave1 bash</p>
+<p> apt-get install ntpdate -y</p>
+<p> ntpdate hmaster</p>
+<p> 时间同步成功 </p>
+<p><img src="https://fastly.jsdelivr.net/gh/aobiym/PhotoHouse@main/Hexo/MyBlog/202411302123600.png" alt="image-20241130212305560"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://aobiym.github.io">aobiym</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://aobiym.github.io/2024/11/30/blog7/">https://aobiym.github.io/2024/11/30/blog7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/hadoop/">hadoop</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2024/11/29/blog6/" title="Hadoopbase"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Hadoopbase</div></div><div class="info-2"><div class="info-item-1">1.# mkdir ubuntu # cd ubuntu #vim Dockerfile &#x2F;&#x2F; docker file for openssh-server -- FROM ubuntu:latest RUN apt update &amp;&amp; apt install openssh-server sudo -y RUN apt-get install vim -y RUN apt-get install iproute2 -y RUN apt-get install openjdk-8-jdk -y RUN groupadd hadoop RUN useradd -rm -d &#x2F;home&#x2F;ubuntu -s &#x2F;bin&#x2F;bash -g root -G sudo -g hadoop -u 1000 hduser  RUN echo ‘hduser:1234’ | chpasswd RUN service ssh start EXPOSE 22 CMD...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2024/11/04/blog1/" title="Ubuntu安装Nginx"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-04</div><div class="info-item-2">Ubuntu安装Nginx</div></div><div class="info-2"><div class="info-item-1">1.下载Nginx    $ sudo apt update $ sudo apt install nginx 2.调整防火墙    $ sudo ufw app list  没有的话要添加，使“Nginx HTTP”能通过防火墙 $ sudo ufw allow ‘Nginx HTTP’ $ sudo ufw status     3.检查Nginx状态      $ systemctl status nginx     4.输入ip地址出现Nginx的欢迎界面代表安装成功      </div></div></div></a><a class="pagination-related" href="/2024/11/07/blog2/" title="Ubuntu安装Docker"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-07</div><div class="info-item-2">Ubuntu安装Docker</div></div><div class="info-2"><div class="info-item-1"> 下载 docker  $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - $ sudo apt install software-properties-common $ sudo add-apt-repository “deb [arch&#x3D;amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable” $ sudo apt-get update $ apt-cache policy docker-ce $ sudo apt-get install -y docker-ce $ sudo systemctl status docker（检查docker状态）  2.add docker access right…  $ sudo usermod -aG docker $(whoami)  &gt;&gt; verify, 要登出再登入，才会有权限   $ docker ps ...</div></div></div></a><a class="pagination-related" href="/2024/11/08/blog4/" title="Docker安装mysql"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-08</div><div class="info-item-2">Docker安装mysql</div></div><div class="info-2"><div class="info-item-1">1.查看可用版本 docker search mysql 2.拉取Mysql镜像 拉取官方的最新版本的镜像： $ docker pull mysql:latest 3.使用以下命令来查看是否已安装了 mysql： $ docker images  4.运行容器docker run –name aobim-mysql -p 3307:3306 -e MYSQL_ROOT_PASSWORD&#x3D;7474 -d mysql –name aobim-mysql ：容器名字（例如：aobim-mysql）  -p 3307:3306 ：映射容器服务的 3307 端口到宿主机的 3306 端口，外部主机可以直接通过ip+3307 访问到 MySQL 的服务。  MYSQL_ROOT_PASSWORD&#x3D;7474：设置 MySQL 服务 root 用户的密码。  -d mysql： 设置容器在在后台一直运行。 5.docker ps 查看容器id  6.进入容器内操作 docker exec -it “tag name” bash （tag...</div></div></div></a><a class="pagination-related" href="/2024/11/08/blog3/" title="Docker 安装Nginx"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-08</div><div class="info-item-2">Docker 安装Nginx</div></div><div class="info-2"><div class="info-item-1">1.拉取最新的Nginx镜像 docker pull nginx:latest 2.使用以下命令来查看是否已安装了 nginx： $ docker images  3.安装完成后，我们可以使用以下命令来运行 nginx 容器： $ docker run –name nginx-test -p 8080:80 -d nginx  –name nginx-test：容器名称。  -p 8080:80： 端口进行映射，将本地 8080 端口映射到容器内部的 80 端口。  -d nginx： 设置容器在在后台一直运行。 4.ip+8080（刚刚设置的端口）即可出现nginx的欢迎界面，代表安装成功  </div></div></div></a><a class="pagination-related" href="/2024/11/29/blog5/" title="Docker安装Ubuntu"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-29</div><div class="info-item-2">Docker安装Ubuntu</div></div><div class="info-2"><div class="info-item-1">1.拉取最新ubuntu镜像     $ docker pull ubuntu:latest     2.查看ubuntu安装是否成功    $ docker images         3.运行ubuntu     docker run -it –entrypoint “bin&#x2F;bash” ubuntu     4.运行    # docker-compose up </div></div></div></a><a class="pagination-related" href="/2024/11/29/blog6/" title="Hadoopbase"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-29</div><div class="info-item-2">Hadoopbase</div></div><div class="info-2"><div class="info-item-1">1.# mkdir ubuntu # cd ubuntu #vim Dockerfile &#x2F;&#x2F; docker file for openssh-server -- FROM ubuntu:latest RUN apt update &amp;&amp; apt install openssh-server sudo -y RUN apt-get install vim -y RUN apt-get install iproute2 -y RUN apt-get install openjdk-8-jdk -y RUN groupadd hadoop RUN useradd -rm -d &#x2F;home&#x2F;ubuntu -s &#x2F;bin&#x2F;bash -g root -G sudo -g hadoop -u 1000 hduser  RUN echo ‘hduser:1234’ | chpasswd RUN service ssh start EXPOSE 22 CMD...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">aobiym</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/aobiym" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/30/blog7/" title="时间同步">时间同步</a><time datetime="2024-11-30T13:16:47.264Z" title="Created 2024-11-30 21:16:47">2024-11-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/29/blog6/" title="Hadoopbase">Hadoopbase</a><time datetime="2024-11-29T12:18:15.077Z" title="Created 2024-11-29 20:18:15">2024-11-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/29/blog5/" title="Docker安装Ubuntu">Docker安装Ubuntu</a><time datetime="2024-11-29T12:08:30.000Z" title="Created 2024-11-29 20:08:30">2024-11-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/08/blog4/" title="Docker安装mysql">Docker安装mysql</a><time datetime="2024-11-07T16:20:31.810Z" title="Created 2024-11-08 00:20:31">2024-11-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/08/blog3/" title="Docker 安装Nginx">Docker 安装Nginx</a><time datetime="2024-11-07T16:16:48.312Z" title="Created 2024-11-08 00:16:48">2024-11-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By aobiym</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
